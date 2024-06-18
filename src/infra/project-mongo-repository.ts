@@ -19,11 +19,11 @@ export class ProjectMongoRepository implements AddProjectRepository, GetProjects
   async getProjects (): Promise<ProjectModel[]> {
     const projectCollection = await MongoHelper.client.db().collection<MongoProject>('projects')
     const projects = await projectCollection.find().toArray()
-    return projects.map(({ _id, name, description, date, tasks }) => ({
+    return projects.map(({ _id, name, description, dueDate, tasks }) => ({
       id: _id.toHexString(),
       name,
       description,
-      date,
+      dueDate,
       tasks
     }))
   }
@@ -36,8 +36,8 @@ export class ProjectMongoRepository implements AddProjectRepository, GetProjects
       throw new Error('Project not found')
     }
 
-    const { _id, name, description, date, tasks } = result
-    return { id: _id.toHexString(), name, description, date, tasks }
+    const { _id, name, description, dueDate, tasks } = result
+    return { id: _id.toHexString(), name, description, dueDate, tasks }
   }
 
   async addTaskToProject (id: string, task: string): Promise<ProjectModel> {
