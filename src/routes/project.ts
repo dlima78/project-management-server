@@ -37,7 +37,7 @@ export default (router: Router) => {
     return addTaskToProjectController.handle(req, res)
   })
 
-  router.put('/project/removeTask/:id', (req, res) => {
+  router.put('/project/removeTask/:projectId', (req, res) => {
     const projectMongoRepository = new ProjectMongoRepository()
 
     const removeTaskFromProjectController = new RemoveTaskFromProjectController(projectMongoRepository)

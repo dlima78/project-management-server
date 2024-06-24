@@ -43,23 +43,25 @@ export class ProjectMongoRepository implements AddProjectRepository, GetProjects
   async addTaskToProject (id: string, task: string): Promise<ProjectModel> {
     const projectCollection = await MongoHelper.client.db().collection<MongoProject>('projects')
 
+    const taskWithId = {
+      taskId: new ObjectId().toHexString(),
+      name: task
+    }
+
     await projectCollection.updateOne(
       { _id: new ObjectId(id) },
-      { $push: { tasks: task } }
+      { $push: { tasks: taskWithId } }
     )
     return this.getProject(id)
   }
 
-  async removeTaskFromProject (id: string, task: string): Promise<ProjectModel> {
+  async removeTaskFromProject (projectId: string, taskId: string): Promise<ProjectModel> {
     const projectCollection = await MongoHelper.client.db().collection<MongoProject>('projects')
-
-    console.log(id, task)
-
     await projectCollection.updateOne(
-      { _id: new ObjectId(id) },
-      { $pull: { tasks: task } }
+      { _id: new ObjectId(projectId) },
+      { $pull: { tasks: { taskId } } }
     )
-    return this.getProject(id)
+    return this.getProject(projectId)
   }
 
   async deleteProject (id: string): Promise<void> {

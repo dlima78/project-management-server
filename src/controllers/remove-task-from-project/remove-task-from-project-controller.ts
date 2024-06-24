@@ -11,13 +11,13 @@ export class RemoveTaskFromProjectController {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      const id = req.params.id
-      const { task } = req.body
-      if (!id || !task) {
+      const projectId = req.params.projectId
+      const { taskId } = req.body
+      if (!projectId || !taskId) {
         return res.status(400)
       }
 
-      const result = await this.removeTaskFromProjectRepository.removeTaskFromProject(id, task)
+      const result = await this.removeTaskFromProjectRepository.removeTaskFromProject(projectId, taskId)
 
       return res.status(201).json(result)
     } catch (error) {

@@ -11,8 +11,8 @@ export class AddProjectController {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      const { name, description, dueDate, tasks } = req.body
-      if (!name ?? !description ?? !dueDate ?? !tasks) {
+      const { name, description, dueDate, task } = req.body
+      if (!name ?? !description ?? !dueDate ?? !task) {
         return res.status(400)
       }
 
